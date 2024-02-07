@@ -22,9 +22,85 @@ public partial class @InputActionsPlayer : IInputActionCollection2, IDisposable
     {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""InputActionsPlayer"",
-    ""maps"": [],
+    ""maps"": [
+        {
+            ""name"": ""Standard"",
+            ""id"": ""603fc948-6111-4564-b222-0410a2f941a8"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Value"",
+                    ""id"": ""52c5e8e3-2e7c-44e3-80d1-0e1203e21c8d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""9692cf3c-6b20-4a26-af5c-7e256024479f"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""02216e53-c6ff-4a7b-9ecf-856dcab24105"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""6f76c0bc-f66d-4c98-9d05-d507ab57b75a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""f191af25-88b6-4461-bee0-272c3451604e"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e8d93588-4b52-4c66-96c5-5281c38094ac"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        }
+    ],
     ""controlSchemes"": []
 }");
+        // Standard
+        m_Standard = asset.FindActionMap("Standard", throwIfNotFound: true);
+        m_Standard_Newaction = m_Standard.FindAction("New action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -79,5 +155,42 @@ public partial class @InputActionsPlayer : IInputActionCollection2, IDisposable
     public int FindBinding(InputBinding bindingMask, out InputAction action)
     {
         return asset.FindBinding(bindingMask, out action);
+    }
+
+    // Standard
+    private readonly InputActionMap m_Standard;
+    private IStandardActions m_StandardActionsCallbackInterface;
+    private readonly InputAction m_Standard_Newaction;
+    public struct StandardActions
+    {
+        private @InputActionsPlayer m_Wrapper;
+        public StandardActions(@InputActionsPlayer wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_Standard_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_Standard; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(StandardActions set) { return set.Get(); }
+        public void SetCallbacks(IStandardActions instance)
+        {
+            if (m_Wrapper.m_StandardActionsCallbackInterface != null)
+            {
+                @Newaction.started -= m_Wrapper.m_StandardActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_StandardActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_StandardActionsCallbackInterface.OnNewaction;
+            }
+            m_Wrapper.m_StandardActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
+            }
+        }
+    }
+    public StandardActions @Standard => new StandardActions(this);
+    public interface IStandardActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }
