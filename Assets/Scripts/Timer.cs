@@ -18,15 +18,15 @@ public class Timer : MonoBehaviour
         else
         {
             Trainer.gameOver = true;
-            timerLbl.text = "GAME OVVER";
+            timerLbl.text = "GAME OVER";
         }
     }
 
     private void DisplayTime(float displayTime)
     {
         float minutes = Mathf.FloorToInt(displayTime / 60);
-        float second = Mathf.FloorToInt(displayTime % 60);
-        timerLbl.text = $"{minutes} : {second}"; 
+        float seconds = Mathf.FloorToInt(displayTime % 60);
+        timerLbl.text = $"{minutes} : {seconds}"; 
     }
 
 }
