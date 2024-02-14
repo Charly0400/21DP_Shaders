@@ -52,7 +52,8 @@ Shader "Bit2Good/SFS/Standard/Diffuse/Self-Illumination Transparency"{
 		void surf(Input IN, inout SurfaceOutput o){
 			half fresnel = _Factor * pow(1.0 - dot(normalize(IN.viewDir), o.Normal), _FPow);
 			o.Albedo = tex2D(_Diffuse, IN.uv_Diffuse).rgb;
-			o.Emission = lerp(o.Albedo, _Color.rgb, _Color.a) * fresnel + (tex2D(_Illumination, IN.uv_Illumination).a * _Emission.rgb * _Emission.a);
+			o.Emission = lerp(o.Albedo, _Color.rgb, _Color.a) * fresnel + 
+				(tex2D(_Illumination, IN.uv_Illumination).a * _Emission.rgb * _Emission.a);
 			o.Alpha = tex2D(_Diffuse, IN.uv_Diffuse).a * _Transparency;
 		}
 		

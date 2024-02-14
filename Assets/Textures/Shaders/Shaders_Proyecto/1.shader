@@ -18,9 +18,7 @@ Shader "Custom/1"
             float2 uvMainTex;
         };
     // Variable de baja precision, el 4 represente un array de 4 posiciones
-        fixed4 MyColor;
-        fixed4 MyEmission;
-        fixed4 MyNormal;
+        fixed4 MyColor, MyEmission, MyNormal;
         samplerCUBE MyCube;
 
         void surf(Input In, inout SurfaceOutput o)
