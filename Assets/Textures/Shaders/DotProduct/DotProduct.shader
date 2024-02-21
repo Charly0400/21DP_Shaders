@@ -33,6 +33,7 @@ Shader "Custom/DotProduct"
             o.Albedo = c.rgb;
             half rim = saturate(1- dot(normalize(IN.viewDir), o.Normal));
             o.Emission = _RimColor.rgb * pow(rim, ColorSlider);
+         
 
             //----Parte1----//
             /*half dotp2 = dot(IN.viewDir, o.Emission);
